@@ -81,4 +81,18 @@ git push origin -u add_duck_db
 
 7. [Create a Pull Request (PR)](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/creating-a-pull-request#creating-the-pull-request) in Github.
 
-8. [Merge your first PR](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/incorporating-changes-from-a-pull-request/merging-a-pull-request#merging-a-pull-request).
+8. [Merge your first 
+PR](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/incorporating-changes-from-a-pull-request/merging-a-pull-request#merging-a-pull-request). 
+
+## Important Metrics and Data Points Available - Workshop 2  
+
+In this week's workshop, we discussed potential metrics that a user might request to see on the pipeline, through a mock interview with 
+Alex, a senior analyst at X company. 
+
+The most important metrics that we want to look at with this pipeline are the growth of stars and the growth rate of commits for the repos 
+available on GitHub. 
+
+The data points available for this project are all going to be from GH Archive. This is chosen because the data on GH Archive will be 
+updated hourly, which is more than enough for Alex's daily update requirement. 
+
+The data will be delivered in a SQL Database, and updated daily. 
