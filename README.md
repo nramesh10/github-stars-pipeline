@@ -11,6 +11,7 @@ The data points available for this project are all going to be from GH Archive. 
 updated hourly, and will provide ample data for a daily update. 
 
 The data will be delivered in a SQL Database, and updated daily. 
+<<<<<<< Updated upstream
 
 ##Models 
 
@@ -63,3 +64,5 @@ where repo_name = "{Insert repo name}"
 
 This is a similar query used to look at commit growths in the same manner. 
 
+=======
+>>>>>>> Stashed changes
