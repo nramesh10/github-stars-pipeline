@@ -11,7 +11,6 @@ The data points available for this project are all going to be from GH Archive. 
 updated hourly, and will provide ample data for a daily update. 
 
 The data will be delivered in a SQL Database, and updated daily. 
-<<<<<<< Updated upstream
 
 ##Models 
 
@@ -21,18 +20,10 @@ plan on using is a Kimball Model.
 
 ### Different Fact and Dimensions Models 
 1. Transactional Fact Model 
-This model is typically used in to relate business transactions, and 
-usually includes facts like sales orders, invoices, and shipments to 
-structure their data. 
 
 2. Snapshot Fact Model 
-Another business model, a snapchat fact model provides insight for how a 
-business entity might look at a certain point in time.
  
-3.Slowly Changing Dimension Model 
-This model is used to document changes to dimensions over time. Some 
-typical attributes used here are dates, historical values, and flags that 
-indicate the type of changes. 
+3.Slowly Changing Dimension Model  
 
 ### The Kimball Model - "Star Schema" 
 
@@ -40,6 +31,12 @@ The Kimball Model is also known as a star schema since it is shaped like a
 star when looking at the structure of the schema. In a Kimball Model, 
 there are a couple central fact tables with multiple dimension tables 
 branching off each one. 
+
+Here is a list of the fact and dimension models available. 
+fact_stars
+fact_commits
+dim_repositories
+dim_users 
 
 ### Sample SQL 
 When dealing with models such as this one, it's important to have optimal 
@@ -63,6 +60,3 @@ where repo_name = "{Insert repo name}"
 ```
 
 This is a similar query used to look at commit growths in the same manner. 
-
-=======
->>>>>>> Stashed changes

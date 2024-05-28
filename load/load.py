@@ -27,10 +27,10 @@ con = duckdb.connect(database = db_path, read_only = False)
 
 con.execute("CREATE SCHEMA IF NOT EXISTS source")
 
-create_table_query = """
+create_table_query = f"""
 CREATE OR REPLACE TABLE source.src_gharchive AS 
-SELECT * FROM read_json_auto('{}/*.json')
-""".format(unzipped_dir)
+SELECT * FROM '{unzipped_dir}/*.json'
+"""
 con.execute(create_table_query)
 
 con.close()
