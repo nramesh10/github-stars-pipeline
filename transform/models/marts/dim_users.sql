@@ -1,3 +1,3 @@
 select distinct 
   user 
-  from {{ ref("stg_gharchive") }} 
+from {{ ref("stg_gharchive") }} 

@@ -12,10 +12,9 @@ monthly_stars_with_lag as (
     ms.date_month,
     ms.repo_id,
     ms.count_stars,
-    lag(ms.count_stars) over (
+    lag(ms.count_stars, 12) over (
       partition by ms.repo_id 
       order by ms.date_month
-      rows between 12 preceding and 12 preceding
     ) as last_year_count_stars
   from monthly_stars as ms
 )

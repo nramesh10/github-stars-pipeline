@@ -1,3 +1,3 @@
 select distinct
-repo_id, repo_name
+    repo_id, repo_name
 from {{ ref("stg_gharchive") }}
