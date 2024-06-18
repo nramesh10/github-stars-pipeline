@@ -1,6 +1,6 @@
 with monthly_pushes as (
   select 
-    strftime('%Y-%m', strptime(date, '%m/%d/%Y')) as date_month,  
+    ( extract(year from event_date) || extract(month from event_date) ) as date_month,
     repo_id,
     count(*) as count_pushes
  from {{ ref('fact_commits') }} 
