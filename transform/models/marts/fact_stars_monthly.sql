@@ -1,8 +1,8 @@
 with monthly_stars as (
   select 
-    substr(s.date,5,2) as date_month, 
+    (extract(year from event_date) || extract(month from event_date)) as date_month, 
     s.repo_id,
-    count(s.count) as count_stars
+    count(*) as count_stars
   from {{ ref('fact_stars') }} as s
   group by 1, 2
 ),

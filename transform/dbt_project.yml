@@ -16,6 +16,9 @@ clean-targets:
 
 
 models:
-  transform:
-    example:
+  github_stars:
+    staging:
       +materialized: view
+    marts:
+      +materialized: table
+

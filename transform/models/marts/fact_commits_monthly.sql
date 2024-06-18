@@ -1,10 +1,9 @@
 with monthly_pushes as (
   select 
-    strftime('%Y-%m', event_date) as date_month, 
+    ( extract(year from event_date) || extract(month from event_date) ) as date_month,
     repo_id,
     count(*) as count_pushes
-  from {{ ref("stg_gharchive") }}
-  where event_type = 'Push'
+ from {{ ref('fact_commits') }} 
   group by 1, 2
 ),
 
