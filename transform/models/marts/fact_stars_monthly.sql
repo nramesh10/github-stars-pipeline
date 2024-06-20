@@ -1,29 +1,31 @@
-with monthly_stars as (
-  select 
-    (extract(year from event_date) || extract(month from event_date)) as date_month, 
-    s.repo_id,
-    count(*) as count_stars
-  from {{ ref('fact_stars') }} as s
-  group by 1, 2
+with repo_date_range as (
+  select
+    repo_id,
+    min(event_date) as min_date,
+    max(event_date) as max_date
+  from {{ ref('fact_stars')}}
+  group by 1
 ),
 
-monthly_stars_with_lag as (
+repo_month_spine as (
   select
-    ms.date_month,
-    ms.repo_id,
-    ms.count_stars,
-    lag(ms.count_stars, 12) over (
-      partition by ms.repo_id 
-      order by ms.date_month
-    ) as last_year_count_stars
-  from monthly_stars as ms
+    rd.repo_id,
+    d.date_month
+  from {{ ref('dim_date') }} as d
+  join repo_date_range as rd
+    on d.date_month
+    between date_trunc('month', rd.min_date)
+    and date_trunc('month', rd.max_date)
 )
 
-select 
-  mswl.date_month, 
-  mswl.repo_id, 
-  mswl.count_stars, 
-  mswl.last_year_count_stars,
-  (mswl.count_stars / nullif(mswl.last_year_count_stars, 0)) - 1 as yoy_growth
-from monthly_stars_with_lag as mswl
-order by mswl.date_month, mswl.repo_id
+select
+  rm.date_month,
+  rm.repo_id,
+  sum(case when s.event_date is null then 0 else 1 end) as star_count,
+  lag(star_count, 12) over (partition by rm.repo_id order by rm.date_month) as last_year_star_count,
+  (star_count / last_year_star_count) - 1 as yoy_growth
+from repo_month_spine as rm
+  left join {{ ref('fact_stars') }} as s
+  on rm.date_month = date_trunc('month', s.event_date)
+  and rm.repo_id = s.repo_id
+group by 1, 2
