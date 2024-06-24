@@ -13,7 +13,7 @@ updated hourly, and will provide ample data for a daily update.
 
 The data will be delivered in a SQL Database, and updated daily. 
 
-##Models 
+## Models 
 
 There are different types of models available to users that will display 
 different fact/dimensional information in an efficient manner. The one we 
