@@ -1,29 +1,31 @@
-with monthly_pushes as (
-  select 
-    ( extract(year from event_date) || extract(month from event_date) ) as date_month,
+with repo_date_range as (
+  select
     repo_id,
-    count(*) as count_pushes
- from {{ ref('fact_commits') }} 
-  group by 1, 2
+    min(event_date) as min_date,
+    max(event_date) as max_date
+  from {{ ref('fact_commits')}}
+  group by 1
 ),
 
-monthly_pushes_with_lag as (
+repo_month_spine as (
   select
-    mp.date_month,
-    mp.repo_id,
-    mp.count_pushes,
-    lag(mp.count_pushes, 12) over (
-      partition by mp.repo_id 
-      order by mp.date_month
-    ) as last_year_count_pushes
-  from monthly_pushes as mp
+    rd.repo_id,
+    d.date_month
+  from {{ ref('dim_date') }} as d
+  join repo_date_range as rd
+    on d.date_month
+    between date_trunc('month', rd.min_date)
+    and date_trunc('month', rd.max_date)
 )
 
-select 
-  mpwl.date_month, 
-  mpwl.repo_id, 
-  mpwl.count_pushes, 
-  mpwl.last_year_count_pushes,
-  (mpwl.count_pushes / nullif(mpwl.last_year_count_pushes, 0)) - 1 as yoy_growth
-from monthly_pushes_with_lag as mpwl
-order by 1, 2
+select
+  rm.date_month,
+  rm.repo_id,
+  sum(case when s.event_date is null then 0 else 1 end) as commit_count,
+  lag(commit_count, 12) over (partition by rm.repo_id order by rm.date_month) as last_year_commit_count,
+  (commit_count / last_year_commit_count) - 1 as yoy_growth
+from repo_month_spine as rm
+  left join {{ ref('fact_commits') }} as s
+  on rm.date_month = date_trunc('month', s.event_date)
+  and rm.repo_id = s.repo_id
+group by 1, 2

@@ -9,6 +9,7 @@ build
 .vscode
 *.db
 ./data/gharchive_sample/*.json.gz
+./data/gharchive_sample/my_database.duckdb
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
